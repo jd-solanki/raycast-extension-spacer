@@ -1,4 +1,4 @@
-import { Action, ActionPanel, Icon, List, closeMainWindow } from "@raycast/api";
+import { Action, ActionPanel, closeMainWindow, Icon, launchCommand, LaunchType, List } from "@raycast/api";
 import { useLocalStorage } from "@raycast/utils";
 import { switchToSpace } from "./applescript";
 import { Space } from "./types";
@@ -23,6 +23,18 @@ export default function SwitchSpace() {
                 onAction={async () => {
                   await switchToSpace(space.index);
                   await closeMainWindow();
+                }}
+              />
+              <Action
+                title="Configure Space"
+                icon={Icon.Cog}
+                shortcut={{ modifiers: ["cmd"], key: "e" }}
+                onAction={async () => {
+                  await launchCommand({
+                    name: "configure-spaces",
+                    type: LaunchType.UserInitiated,
+                    context: { spaceIndex: space.index },
+                  });
                 }}
               />
             </ActionPanel>

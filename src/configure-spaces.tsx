@@ -1,9 +1,17 @@
-import { Action, ActionPanel, Form, Icon, List, useNavigation } from "@raycast/api";
+import { Action, ActionPanel, Form, Icon, LaunchProps, List, popToRoot, useNavigation } from "@raycast/api";
 import { useLocalStorage } from "@raycast/utils";
 import { Space } from "./types";
 
-export default function ConfigureSpaces() {
+export default function ConfigureSpaces(props: LaunchProps) {
   const { value: spaces, setValue: setSpaces, isLoading } = useLocalStorage<Space[]>("spaces", []);
+
+  if (props.launchContext?.spaceIndex) {
+    if (isLoading) {
+      return <Form isLoading={true} />;
+    }
+    const space = spaces?.find((s) => s.index === props.launchContext?.spaceIndex);
+    return <SpaceForm space={space} spaces={spaces || []} setSpaces={setSpaces} isRoot={true} />;
+  }
 
   return (
     <List isLoading={isLoading}>
@@ -57,14 +65,16 @@ function SpaceForm({
   space,
   spaces,
   setSpaces,
+  isRoot = false,
 }: {
   space?: Space;
   spaces: Space[];
   setSpaces: (spaces: Space[]) => void;
+  isRoot?: boolean;
 }) {
   const { pop } = useNavigation();
 
-  function handleSubmit(values: { index: string; name: string; icon: string }) {
+  async function handleSubmit(values: { index: string; name: string; icon: string }) {
     const index = parseInt(values.index, 10);
     const newSpace: Space = { index, name: values.name, icon: values.icon };
 
@@ -80,8 +90,13 @@ function SpaceForm({
     // Sort by index
     newSpaces.sort((a, b) => a.index - b.index);
 
-    setSpaces(newSpaces);
-    pop();
+    await setSpaces(newSpaces);
+
+    if (isRoot) {
+      await popToRoot();
+    } else {
+      pop();
+    }
   }
 
   return (
