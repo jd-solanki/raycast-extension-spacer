@@ -12,7 +12,7 @@ export default function SwitchSpace() {
       {(spaces || []).map((space) => (
         <List.Item
           key={space.index}
-          icon={Icon.Monitor}
+          icon={space.icon || Icon.Monitor}
           title={space.name}
           subtitle={`Desktop ${space.index}`}
           actions={

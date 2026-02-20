@@ -19,7 +19,7 @@ export default function ConfigureSpaces() {
       {(spaces || []).map((space) => (
         <List.Item
           key={space.index}
-          icon={Icon.Monitor}
+          icon={space.icon || Icon.Monitor}
           title={space.name}
           subtitle={`Desktop ${space.index}`}
           actions={
@@ -64,9 +64,9 @@ function SpaceForm({
 }) {
   const { pop } = useNavigation();
 
-  function handleSubmit(values: { index: string; name: string }) {
+  function handleSubmit(values: { index: string; name: string; icon: string }) {
     const index = parseInt(values.index, 10);
-    const newSpace: Space = { index, name: values.name };
+    const newSpace: Space = { index, name: values.name, icon: values.icon };
 
     const existingIndex = spaces.findIndex((s) => s.index === index);
     const newSpaces = [...spaces];
@@ -98,6 +98,11 @@ function SpaceForm({
         ))}
       </Form.Dropdown>
       <Form.TextField id="name" title="Name" placeholder="e.g. Work" defaultValue={space?.name || ""} />
+      <Form.Dropdown id="icon" title="Icon" defaultValue={space?.icon || Icon.Monitor}>
+        {Object.entries(Icon).map(([key, value]) => (
+          <Form.Dropdown.Item key={key} value={value} title={key} icon={value} />
+        ))}
+      </Form.Dropdown>
     </Form>
   );
 }
