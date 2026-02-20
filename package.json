@@ -3,11 +3,10 @@
   "name": "spacer",
   "title": "Spacer",
   "description": "Name your spaces & more...",
-  "icon": "extension-icon.png",
+  "icon": "spacer-icon.png",
   "author": "jd-solanki",
   "platforms": [
-    "macOS",
-    "Windows"
+    "macOS"
   ],
   "categories": [
     "Productivity"
