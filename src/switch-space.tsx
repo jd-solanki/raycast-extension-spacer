@@ -1,4 +1,14 @@
-import { Action, ActionPanel, closeMainWindow, Icon, launchCommand, LaunchType, List, showToast, Toast } from "@raycast/api";
+import {
+  Action,
+  ActionPanel,
+  closeMainWindow,
+  Icon,
+  launchCommand,
+  LaunchType,
+  List,
+  showToast,
+  Toast,
+} from "@raycast/api";
 import { useLocalStorage } from "@raycast/utils";
 import { switchToSpace } from "./applescript";
 import { ConfigureSpacesLaunchContext, Space } from "./types";
